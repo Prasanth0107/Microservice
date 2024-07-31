@@ -112,7 +112,7 @@ pipeline {
                 script {
                     withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
  checkoutservice
-                        sh "docker push adijaiswal/checkoutservice:latest "
+                        sh "docker push prasanth0107/checkoutservice:latest "
                     }
 
  recommendationservice
@@ -124,7 +124,7 @@ pipeline {
                     }
 
  frontend
-                        sh "docker push adijaiswal/frontend:latest"
+                        sh "docker push prasanth0107/frontend:latest"
                     }
 
  shippingservice
