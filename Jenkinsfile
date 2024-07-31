@@ -93,7 +93,7 @@ pipeline {
                     }
 
  frontend
-                        sh "docker push adijaiswal/frontend:latest"
+                        sh "docker push prasanth0107/frontend:latest"
                     }
 
  shippingservice
