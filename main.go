@@ -15,13 +15,19 @@
 package main
 
 import (
+ frontend
 	"context"
 	"fmt"
 	"net/http"
+
+	"fmt"
+	"net"
+ main
 	"os"
 	"time"
 
 	"cloud.google.com/go/profiler"
+ frontend
 	"github.com/gorilla/mux"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
@@ -85,6 +91,27 @@ type frontendServer struct {
 func main() {
 	ctx := context.Background()
 	log := logrus.New()
+
+	"github.com/sirupsen/logrus"
+	"golang.org/x/net/context"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/reflection"
+	"google.golang.org/grpc/status"
+
+	pb "github.com/GoogleCloudPlatform/microservices-demo/src/shippingservice/genproto"
+	healthpb "google.golang.org/grpc/health/grpc_health_v1"
+)
+
+const (
+	defaultPort = "50051"
+)
+
+var log *logrus.Logger
+
+func init() {
+	log = logrus.New()
+ main
 	log.Level = logrus.DebugLevel
 	log.Formatter = &logrus.JSONFormatter{
 		FieldMap: logrus.FieldMap{
@@ -95,6 +122,7 @@ func main() {
 		TimestampFormat: time.RFC3339Nano,
 	}
 	log.Out = os.Stdout
+ frontend
 
 	svc := new(frontendServer)
 
@@ -105,17 +133,33 @@ func main() {
 	if os.Getenv("ENABLE_TRACING") == "1" {
 		log.Info("Tracing enabled.")
 		initTracing(log, ctx, svc)
+
+}
+
+func main() {
+	if os.Getenv("DISABLE_TRACING") == "" {
+		log.Info("Tracing enabled, but temporarily unavailable")
+		log.Info("See https://github.com/GoogleCloudPlatform/microservices-demo/issues/422 for more info.")
+		go initTracing()
+ main
 	} else {
 		log.Info("Tracing disabled.")
 	}
 
+ frontend
 	if os.Getenv("ENABLE_PROFILER") == "1" {
 		log.Info("Profiling enabled.")
 		go initProfiling(log, "frontend", "1.0.0")
+
+	if os.Getenv("DISABLE_PROFILER") == "" {
+		log.Info("Profiling enabled.")
+		go initProfiling("shippingservice", "1.0.0")
+ main
 	} else {
 		log.Info("Profiling disabled.")
 	}
 
+ frontend
 	srvPort := port
 	if os.Getenv("PORT") != "" {
 		srvPort = os.Getenv("PORT")
@@ -184,18 +228,113 @@ func initProfiling(log logrus.FieldLogger, service, version string) {
 	// since they are not sharing packages.
 	for i := 1; i <= 3; i++ {
 		log = log.WithField("retry", i)
+
+	port := defaultPort
+	if value, ok := os.LookupEnv("PORT"); ok {
+		port = value
+	}
+	port = fmt.Sprintf(":%s", port)
+
+	lis, err := net.Listen("tcp", port)
+	if err != nil {
+		log.Fatalf("failed to listen: %v", err)
+	}
+
+	var srv *grpc.Server
+	if os.Getenv("DISABLE_STATS") == "" {
+		log.Info("Stats enabled, but temporarily unavailable")
+		srv = grpc.NewServer()
+	} else {
+		log.Info("Stats disabled.")
+		srv = grpc.NewServer()
+	}
+	svc := &server{}
+	pb.RegisterShippingServiceServer(srv, svc)
+	healthpb.RegisterHealthServer(srv, svc)
+	log.Infof("Shipping Service listening on port %s", port)
+
+	// Register reflection service on gRPC server.
+	reflection.Register(srv)
+	if err := srv.Serve(lis); err != nil {
+		log.Fatalf("failed to serve: %v", err)
+	}
+}
+
+// server controls RPC service responses.
+type server struct{}
+
+// Check is for health checking.
+func (s *server) Check(ctx context.Context, req *healthpb.HealthCheckRequest) (*healthpb.HealthCheckResponse, error) {
+	return &healthpb.HealthCheckResponse{Status: healthpb.HealthCheckResponse_SERVING}, nil
+}
+
+func (s *server) Watch(req *healthpb.HealthCheckRequest, ws healthpb.Health_WatchServer) error {
+	return status.Errorf(codes.Unimplemented, "health check via Watch not implemented")
+}
+
+// GetQuote produces a shipping quote (cost) in USD.
+func (s *server) GetQuote(ctx context.Context, in *pb.GetQuoteRequest) (*pb.GetQuoteResponse, error) {
+	log.Info("[GetQuote] received request")
+	defer log.Info("[GetQuote] completed request")
+
+	// 1. Generate a quote based on the total number of items to be shipped.
+	quote := CreateQuoteFromCount(0)
+
+	// 2. Generate a response.
+	return &pb.GetQuoteResponse{
+		CostUsd: &pb.Money{
+			CurrencyCode: "USD",
+			Units:        int64(quote.Dollars),
+			Nanos:        int32(quote.Cents * 10000000)},
+	}, nil
+
+}
+
+// ShipOrder mocks that the requested items will be shipped.
+// It supplies a tracking ID for notional lookup of shipment delivery status.
+func (s *server) ShipOrder(ctx context.Context, in *pb.ShipOrderRequest) (*pb.ShipOrderResponse, error) {
+	log.Info("[ShipOrder] received request")
+	defer log.Info("[ShipOrder] completed request")
+	// 1. Create a Tracking ID
+	baseAddress := fmt.Sprintf("%s, %s, %s", in.Address.StreetAddress, in.Address.City, in.Address.State)
+	id := CreateTrackingId(baseAddress)
+
+	// 2. Generate a response.
+	return &pb.ShipOrderResponse{
+		TrackingId: id,
+	}, nil
+}
+
+func initStats() {
+	//TODO(arbrown) Implement OpenTelemetry stats
+}
+
+func initTracing() {
+	// TODO(arbrown) Implement OpenTelemetry tracing
+}
+
+func initProfiling(service, version string) {
+	// TODO(ahmetb) this method is duplicated in other microservices using Go
+	// since they are not sharing packages.
+	for i := 1; i <= 3; i++ {
+ main
 		if err := profiler.Start(profiler.Config{
 			Service:        service,
 			ServiceVersion: version,
 			// ProjectID must be set if not running on GCP.
 			// ProjectID: "my-project",
 		}); err != nil {
+ frontend
 			log.Warnf("warn: failed to start profiler: %+v", err)
+
+			log.Warnf("failed to start profiler: %+v", err)
+ main
 		} else {
 			log.Info("started Stackdriver profiler")
 			return
 		}
 		d := time.Second * 10 * time.Duration(i)
+ frontend
 		log.Debugf("sleeping %v to retry initializing Stackdriver profiler", d)
 		time.Sleep(d)
 	}
@@ -221,4 +360,10 @@ func mustConnGRPC(ctx context.Context, conn **grpc.ClientConn, addr string) {
 	if err != nil {
 		panic(errors.Wrapf(err, "grpc: failed to connect %s", addr))
 	}
+
+		log.Infof("sleeping %v to retry initializing Stackdriver profiler", d)
+		time.Sleep(d)
+	}
+	log.Warn("could not initialize Stackdriver profiler after retrying, giving up")
+ main
 }
