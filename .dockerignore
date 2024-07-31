@@ -1,1 +1,10 @@
+ paymentservice
 node_modules
+
+ productcatalogservice
+vendor/
+
+client.js
+node_modules/
+ main
+ main
