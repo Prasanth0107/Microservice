@@ -1,0 +1,12 @@
+ currencyservice
+node_modules/
+=======
+*.iml
+*.ipr
+*.iws
+.gradle/**
+.idea/**
+build/**
+
+
+ main
