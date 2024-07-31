@@ -1,3 +1,6 @@
+ shippingservice
+vendor/
+
  paymentservice
 node_modules
 
@@ -6,5 +9,6 @@ vendor/
 
 client.js
 node_modules/
+ main
  main
  main

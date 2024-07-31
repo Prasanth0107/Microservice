@@ -1,3 +1,9 @@
+ shippingservice
+pipeline { 
+    agent any
+
+    stages {
+
 pipeline {
     agent any
 
@@ -18,10 +24,14 @@ pipeline {
  main
  main
  main
+ main
         stage('Build & Tag Docker Image') {
             steps {
                 script {
                     withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
+ shippingservice
+                        sh "docker build -t prasanth0107/shippingservice:latest ."
+
  paymentservice
                         sh "docker build -t prasanth0107/paymentservice:latest ."
 
@@ -43,6 +53,7 @@ pipeline {
  main
  main
  main
+ main
                     }
                 }
             }
@@ -52,6 +63,10 @@ pipeline {
             steps {
                 script {
                     withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
+ shippingservice
+                        sh "docker push prasanth0107/shippingservice:latest "
+                    }
+
  paymentservice
                         sh "docker push prasanth0107/paymentservice:latest "
                     }
@@ -88,6 +103,7 @@ pipeline {
             steps {
                 withKubeCredentials(kubectlCredentials: [[caCertificate: '', clusterName: 'EKS-1', contextName: '', credentialsId: 'k8-token', namespace: 'webapps', serverUrl: 'https://9F39F577334FF23706994135261985F2.gr7.ap-south-1.eks.amazonaws.com']]) {
                     sh "kubectl get svc -n webapps"
+ main
  main
  main
  main
