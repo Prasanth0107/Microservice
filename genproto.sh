@@ -14,6 +14,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+ productcatalogservice
+# [START gke_productcatalogservice_genproto]
+
+PATH=$PATH:$GOPATH/bin
+protodir=../../protos
+
+protoc --go_out=plugins=grpc:genproto -I $protodir $protodir/demo.proto
+
+# [END gke_productcatalogservice_genproto]
+
  currencyservice
 # [START gke_currencyservice_genproto]
 
@@ -37,5 +47,6 @@ cp ../../protos/demo.proto src/main/proto
 python -m grpc_tools.protoc -I../../protos --python_out=. --grpc_python_out=. ../../protos/demo.proto
 
 # [END gke_emailservice_genproto]
+ main
  main
  main

@@ -1,2 +1,6 @@
+ productcatalogservice
+vendor/
+
 client.js
 node_modules/
+ main
