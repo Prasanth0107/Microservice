@@ -1,3 +1,6 @@
+ currencyservice
+node_modules/
+=======
 *.iml
 *.ipr
 *.iws
@@ -6,3 +9,4 @@
 build/**
 
 
+ main

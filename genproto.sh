@@ -14,6 +14,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+ currencyservice
+# [START gke_currencyservice_genproto]
+
+# protos are loaded dynamically for node, simply copies over the proto.
+mkdir -p proto
+cp -r ../../protos/* ./proto
+
+# [END gke_currencyservice_genproto]
+
  adservice
 # [START gke_adservice_genproto]
 # protos are needed in adservice folder for compiling during Docker build.
@@ -28,4 +37,5 @@ cp ../../protos/demo.proto src/main/proto
 python -m grpc_tools.protoc -I../../protos --python_out=. --grpc_python_out=. ../../protos/demo.proto
 
 # [END gke_emailservice_genproto]
+ main
  main
