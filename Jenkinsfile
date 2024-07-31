@@ -1,3 +1,5 @@
+ cartservice
+
  frontend
 
  shippingservice
@@ -7,10 +9,22 @@ pipeline {
     stages {
 
  main
+ main
 pipeline {
     agent any
 
     stages {
+ cartservice
+        stage('Build & Tag Docker Image') {
+            steps {
+                script {
+                    dir('src') {
+
+                    withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
+                        sh "docker build -t prasanth0107/cartservice:latest ."
+                    }
+                        }
+
  frontend
 
  paymentservice
@@ -65,6 +79,7 @@ pipeline {
  main
  main
                     }
+ main
                 }
             }
         }
@@ -73,6 +88,10 @@ pipeline {
             steps {
                 script {
                     withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
+ cartservice
+                        sh "docker push prasanth0107/cartservice:latest "
+                    }
+
  frontend
                         sh "docker push adijaiswal/frontend:latest"
                     }
@@ -117,6 +136,7 @@ pipeline {
             steps {
                 withKubeCredentials(kubectlCredentials: [[caCertificate: '', clusterName: 'EKS-1', contextName: '', credentialsId: 'k8-token', namespace: 'webapps', serverUrl: 'https://9F39F577334FF23706994135261985F2.gr7.ap-south-1.eks.amazonaws.com']]) {
                     sh "kubectl get svc -n webapps"
+ main
  main
  main
  main
