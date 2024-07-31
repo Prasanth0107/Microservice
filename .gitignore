@@ -1,1 +1,27 @@
+ recommendationservice
 *.pyc
+
+ cartservice
+**/bin/
+**/obj/
+.vs/*.*
+
+ paymentservice
+node_modules
+.DS_Store
+
+ currencyservice
+node_modules/
+
+*.iml
+*.ipr
+*.iws
+.gradle/**
+.idea/**
+build/**
+
+
+ main
+ main
+ main
+ main
