@@ -14,8 +14,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+ adservice
+# [START gke_adservice_genproto]
+# protos are needed in adservice folder for compiling during Docker build.
+
+mkdir -p proto && \
+cp ../../protos/demo.proto src/main/proto
+
+# [END gke_adservice_genproto]
+
 # [START gke_emailservice_genproto]
 
 python -m grpc_tools.protoc -I../../protos --python_out=. --grpc_python_out=. ../../protos/demo.proto
 
 # [END gke_emailservice_genproto]
+ main
