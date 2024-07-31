@@ -12,6 +12,29 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+ loadgenerator
+FROM python:3.11.1-slim@sha256:1591aa8c01b5b37ab31dbe5662c5bdcf40c2f1bce4ef1c1fd24802dae3d01052 as base
+
+FROM base as builder
+
+COPY requirements.txt .
+
+RUN pip install --prefix="/install" -r requirements.txt
+
+FROM base
+
+WORKDIR /loadgen
+
+COPY --from=builder /install /usr/local
+
+# Add application code.
+COPY locustfile.py .
+
+# enable gevent support in debugger
+ENV GEVENT_SUPPORT=True
+
+ENTRYPOINT locust --host="http://${FRONTEND_ADDR}" --headless -u "${USERS:-10}" 2>&1
+
  currencyservice
 FROM node:20.2.0-alpine@sha256:f25b0e9d3d116e267d4ff69a3a99c0f4cf6ae94eadd87f1bf7bd68ea3ff0bef7 as base
 
@@ -125,5 +148,6 @@ ENTRYPOINT [ "python", "email_server.py" ]
 FROM without-grpc-health-probe-bin
 
 COPY --from=builder /bin/grpc_health_probe /bin/grpc_health_probe
+ main
  main
  main
