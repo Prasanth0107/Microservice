@@ -14,6 +14,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+ paymentservice
+# [START gke_paymentservice_genproto]
+
  productcatalogservice
 # [START gke_productcatalogservice_genproto]
 
@@ -26,10 +29,14 @@ protoc --go_out=plugins=grpc:genproto -I $protodir $protodir/demo.proto
 
  currencyservice
 # [START gke_currencyservice_genproto]
+ main
 
 # protos are loaded dynamically for node, simply copies over the proto.
 mkdir -p proto
 cp -r ../../protos/* ./proto
+
+ paymentservice
+# [END gke_paymentservice_genproto]
 
 # [END gke_currencyservice_genproto]
 
@@ -47,6 +54,7 @@ cp ../../protos/demo.proto src/main/proto
 python -m grpc_tools.protoc -I../../protos --python_out=. --grpc_python_out=. ../../protos/demo.proto
 
 # [END gke_emailservice_genproto]
+ main
  main
  main
  main

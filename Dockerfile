@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+ paymentservice
+
  productcatalogservice
 FROM golang:1.20.4-alpine@sha256:0a03b591c358a0bb02e39b93c30e955358dadd18dc507087a3b7f3912c17fe13 AS builder
 RUN apk add --no-cache ca-certificates git
@@ -72,6 +74,7 @@ ENV GEVENT_SUPPORT=True
 ENTRYPOINT locust --host="http://${FRONTEND_ADDR}" --headless -u "${USERS:-10}" 2>&1
 
  currencyservice
+ main
 FROM node:20.2.0-alpine@sha256:f25b0e9d3d116e267d4ff69a3a99c0f4cf6ae94eadd87f1bf7bd68ea3ff0bef7 as base
 
 FROM base as builder
@@ -81,7 +84,11 @@ FROM base as builder
 RUN apk add --update --no-cache \
     python3 \
     make \
+ paymentservice
+    g++ 
+
     g++
+ main
 
 WORKDIR /usr/src/app
 
@@ -97,15 +104,24 @@ COPY --from=builder /usr/src/app/node_modules ./node_modules
 
 COPY . .
 
+ paymentservice
+EXPOSE 50051
+
+ENTRYPOINT [ "node", "index.js" ]
+
 EXPOSE 7000
 
 ENTRYPOINT [ "node", "server.js" ]
+ main
 
 FROM without-grpc-health-probe-bin
 
 # renovate: datasource=github-releases depName=grpc-ecosystem/grpc-health-probe
 ENV GRPC_HEALTH_PROBE_VERSION=v0.4.18
 RUN wget -qO/bin/grpc_health_probe https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/${GRPC_HEALTH_PROBE_VERSION}/grpc_health_probe-linux-amd64 && \
+ paymentservice
+    chmod +x /bin/grpc_health_probe
+
     chmod +x /bin/grpc_health_probe
 
  adservice
@@ -184,6 +200,7 @@ ENTRYPOINT [ "python", "email_server.py" ]
 FROM without-grpc-health-probe-bin
 
 COPY --from=builder /bin/grpc_health_probe /bin/grpc_health_probe
+ main
  main
  main
  main

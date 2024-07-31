@@ -1,6 +1,10 @@
+ paymentservice
+node_modules
+.DS_Store
+
  currencyservice
 node_modules/
-=======
+
 *.iml
 *.ipr
 *.iws
@@ -9,4 +13,5 @@ node_modules/
 build/**
 
 
+ main
  main
