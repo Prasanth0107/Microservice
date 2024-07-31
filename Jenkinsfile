@@ -74,7 +74,7 @@ pipeline {
                 script {
                     withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
  frontend
-                        sh "docker push adijaiswal/frontend:latest"
+                        sh "docker push prasanth0107/frontend:latest"
                     }
 
  shippingservice
