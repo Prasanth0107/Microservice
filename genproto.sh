@@ -14,6 +14,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+ frontend
+# [START gke_frontend_genproto]
+
  shippingservice
 # [START gke_shippingservice_genproto]
 
@@ -23,11 +26,15 @@
  productcatalogservice
 # [START gke_productcatalogservice_genproto]
  main
+ main
 
 PATH=$PATH:$GOPATH/bin
 protodir=../../protos
 
 protoc --go_out=plugins=grpc:genproto -I $protodir $protodir/demo.proto
+
+ frontend
+# [END gke_frontend_genproto]
 
  shippingservice
 # [END gke_shippingservice_genproto]
@@ -61,6 +68,7 @@ cp ../../protos/demo.proto src/main/proto
 python -m grpc_tools.protoc -I../../protos --python_out=. --grpc_python_out=. ../../protos/demo.proto
 
 # [END gke_emailservice_genproto]
+ main
  main
  main
  main
