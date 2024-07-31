@@ -1,3 +1,6 @@
+ checkoutservice
+vendor/
+
  frontend
 vendor/
 
@@ -12,6 +15,7 @@ vendor/
 
 client.js
 node_modules/
+ main
  main
  main
  main

@@ -14,6 +14,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+ checkoutservice
+# [START gke_checkoutservice_genproto]
+
  recommendationservice
 # [START gke_recommendationservice_genproto]
 
@@ -39,11 +42,15 @@ python -m grpc_tools.protoc -I../../protos --python_out=. --grpc_python_out=. ..
 # [START gke_productcatalogservice_genproto]
  main
  main
+ main
 
 PATH=$PATH:$GOPATH/bin
 protodir=../../protos
 
 protoc --go_out=plugins=grpc:genproto -I $protodir $protodir/demo.proto
+
+ checkoutservice
+# [END gke_checkoutservice_genproto]
 
  frontend
 # [END gke_frontend_genproto]
@@ -80,6 +87,7 @@ cp ../../protos/demo.proto src/main/proto
 python -m grpc_tools.protoc -I../../protos --python_out=. --grpc_python_out=. ../../protos/demo.proto
 
 # [END gke_emailservice_genproto]
+ main
  main
  main
  main

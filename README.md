@@ -1,3 +1,6 @@
+ checkoutservice
+# checkoutservice
+
  frontend
 # frontend
 
@@ -12,10 +15,13 @@ The Shipping service provides price quote, tracking IDs, and the impression of o
 # productcatalogservice
  main
  main
+ main
 
 Run the following command to restore dependencies to `vendor/` directory:
 
     dep ensure --vendor-only
+ checkoutservice
+
  frontend
 
 
@@ -95,6 +101,7 @@ From `src/adservice/`, run:
 docker build ./
 ```
 
+ main
  main
  main
  main

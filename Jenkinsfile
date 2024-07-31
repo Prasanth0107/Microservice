@@ -1,3 +1,5 @@
+ checkoutservice
+
  recommendationservice
 
  cartservice
@@ -13,15 +15,23 @@ pipeline {
  main
  main
  main
+ main
 pipeline {
     agent any
 
     stages {
+ checkoutservice
+
  recommendationservice
+ main
         stage('Build & Tag Docker Image') {
             steps {
                 script {
                     withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
+ checkoutservice
+                        sh "docker build -t prasanth0107/checkoutservice:latest ."
+                    }
+
                         sh "docker build -t prasanth0107/recommendationservice:latest ."
                     }
 
@@ -92,6 +102,7 @@ pipeline {
                     }
  main
  main
+ main
                 }
             }
         }
@@ -100,6 +111,10 @@ pipeline {
             steps {
                 script {
                     withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') {
+ checkoutservice
+                        sh "docker push adijaiswal/checkoutservice:latest "
+                    }
+
  recommendationservice
                         sh "docker push prasanth0107/recommendationservice:latest "
                     }
@@ -152,6 +167,7 @@ pipeline {
             steps {
                 withKubeCredentials(kubectlCredentials: [[caCertificate: '', clusterName: 'EKS-1', contextName: '', credentialsId: 'k8-token', namespace: 'webapps', serverUrl: 'https://9F39F577334FF23706994135261985F2.gr7.ap-south-1.eks.amazonaws.com']]) {
                     sh "kubectl get svc -n webapps"
+ main
  main
  main
  main

@@ -1,3 +1,6 @@
+ checkoutservice
+module github.com/GoogleCloudPlatform/microservices-demo/src/checkoutservice
+
  frontend
 module github.com/GoogleCloudPlatform/microservices-demo/src/frontend
 
@@ -7,10 +10,16 @@ module github.com/GoogleCloudPlatform/microservices-demo/src/shippingservice
 module github.com/GoogleCloudPlatform/microservices-demo/src/productcatalogservice
  main
  main
+ main
 
 go 1.19
 
 require (
+ checkoutservice
+	cloud.google.com/go/profiler v0.3.1
+	github.com/golang/protobuf v1.5.3
+	github.com/google/uuid v1.3.0
+
  frontend
 	cloud.google.com/go/compute/metadata v0.2.3
 	cloud.google.com/go/profiler v0.3.1
@@ -31,12 +40,16 @@ require (
 	github.com/sirupsen/logrus v1.9.1
 
 	github.com/google/go-cmp v0.5.9
+ main
 	github.com/pkg/errors v0.9.1
 	github.com/sirupsen/logrus v1.9.1
 	go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.41.1
 	go.opentelemetry.io/otel v1.15.1
 	go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc v1.15.1
 	go.opentelemetry.io/otel/sdk v1.15.1
+ checkoutservice
+
+ main
  main
  main
 	golang.org/x/net v0.10.0
@@ -46,13 +59,20 @@ require (
 require (
 	cloud.google.com/go v0.107.0 // indirect
 	cloud.google.com/go/compute v1.15.1 // indirect
+ checkoutservice
+	cloud.google.com/go/compute/metadata v0.2.3 // indirect
+	github.com/cenkalti/backoff/v4 v4.2.1 // indirect
+
  frontend
 	github.com/cenkalti/backoff/v4 v4.2.1 // indirect
 	github.com/felixge/httpsnoop v1.0.3 // indirect
+ main
 	github.com/go-logr/logr v1.2.4 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/google/go-cmp v0.5.9 // indirect
+ checkoutservice
+
 
 	cloud.google.com/go/compute/metadata v0.2.3 // indirect
  shippingservice
@@ -68,6 +88,7 @@ require (
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
  main
+ main
 	github.com/google/pprof v0.0.0-20221103000818-d260c55eee4c // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.2.0 // indirect
 	github.com/googleapis/gax-go/v2 v2.7.0 // indirect
@@ -78,8 +99,11 @@ require (
 	go.opentelemetry.io/otel/metric v0.38.1 // indirect
 	go.opentelemetry.io/otel/trace v1.15.1 // indirect
 	go.opentelemetry.io/proto/otlp v0.19.0 // indirect
+ checkoutservice
+
  frontend
 
+ main
  main
  main
 	golang.org/x/oauth2 v0.4.0 // indirect
@@ -88,6 +112,9 @@ require (
 	google.golang.org/api v0.103.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/genproto v0.0.0-20230110181048-76db0878b65f // indirect
+ checkoutservice
+	google.golang.org/protobuf v1.30.0 // indirect
+
  frontend
 	google.golang.org/protobuf v1.30.0 // indirect
 
@@ -95,6 +122,7 @@ require (
 	google.golang.org/protobuf v1.28.1 // indirect
 
 	google.golang.org/protobuf v1.30.0 // indirect
+ main
  main
  main
 )
